@@ -12,7 +12,7 @@ The most popular tweets
 
 def find_hashtags(top_n):
     global test_data
-    hashtags = []
+    hashtags = [] 
     for tweet in test_data:
         all_words = tweet[0].split(' ')
         for word in all_words:
