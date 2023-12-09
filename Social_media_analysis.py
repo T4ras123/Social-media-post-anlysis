@@ -12,7 +12,7 @@ The most popular tweets
 
 def find_hashtags(top_n):
     global test_data
-    hashtags = [] 
+    hashtags = []
     for tweet in test_data:
         all_words = tweet[0].split(' ')
         for word in all_words:
@@ -64,6 +64,16 @@ def most_active_places(number):
     print(sorted_countries)
 
 
+def popular_tweets(number):
+    engagement = []
+    global test_data
+    for tweet in test_data:
+        eng = int(int(tweet[3])*3 + int(tweet[4]))
+        engagement.append(eng)
+
+
+    print(sorted(engagement, reverse=True))
+
 splited_data = []
 
 with open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file:
@@ -85,6 +95,6 @@ special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
 find_hashtags(5)
 find_words(5, 10)
-most_active_places(5)
+popular_tweets(5)
 
 #%%
