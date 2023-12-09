@@ -63,7 +63,7 @@ def find_words(top_m, length=5):
     draw_pie(u, w)
 
 
-def most_active_places(number):
+def most_active_places():
     countries = {'Worldwide': 0,
                  'NoInfo': 0}
     countries_list = []
