@@ -2,6 +2,8 @@ import csv
 import matplotlib as mpl
 from collections import Counter
 from geopy.geocoders import Nominatim
+
+
 """
 Most active country
 The most popular tweets  
@@ -32,7 +34,9 @@ def find_words(top_m, length=5):
 
 
 def most_active_places(number):
-    countries = {}
+    countries = {'Worldwide': 0,
+                 'NoInfo': 0}
+    countries_list = []
     loc = Nominatim(user_agent="GetLoc")
     for post in test_data:
         getLoc = loc.geocode(post[1])
@@ -40,9 +44,9 @@ def most_active_places(number):
         if post[1] in countries.keys():
             countries[post[1]] += 1
         else:
-            for country in countries.keys():
-                getLoc1 = loc.geocode(country)
+            for country in countries_list:
                 try:
+                    getLoc1 = loc.geocode(country)
                     if (abs(getLoc.latitude - getLoc1.latitude) < 1
                             and abs(getLoc.longitude - getLoc1.longitude) < 1):
                         countries[country] += 1
@@ -50,21 +54,23 @@ def most_active_places(number):
                         break
                     else:
                         continue
-                except:
+                except AttributeError:
                     countries.update({post[1]: 1})
+                    countries_list.append(post[1])
             if flag == 0:
                 countries.update({post[1]: 1})
+                countries_list.append(post[1])
     sorted_countries = sorted(countries)
     print(sorted_countries)
 
 
 splited_data = []
 
-with open("tweets_raw.csv", "r", encoding="utf8") as file:
+with open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file:
     data = csv.reader(file)
     for row in data:
         splited_data.append([" ".join(element.split())
-                             if element != '' else 'No info'
+                             if element != '' else 'NoInfo'
                              for element in row][2:])
     
 
