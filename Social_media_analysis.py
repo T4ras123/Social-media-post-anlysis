@@ -10,6 +10,23 @@ The most popular tweets
 """
 
 
+def draw_pie(values, names):
+    plt.style.use('dark_background')
+    fig, ax = plt.subplots()
+    ax.pie(values, labels=names)
+    plt.show()
+
+
+def draw_bars(x_axis, y_axis, x_name='', y_name="", title=""):
+    plt.style.use('dark_background')
+    fig, ax = plt.subplots()
+    ax.bar(list(x_axis)[:15], y_axis[:15])
+    ax.set_ylabel(y_name)
+    ax.set_xlabel(x_name)
+    ax.set_title(title)
+    plt.show()
+
+
 def find_hashtags(top_n):
     global test_data
     u, w = [], []
@@ -21,15 +38,10 @@ def find_hashtags(top_n):
                 hashtags.append(word)
 
     p = Counter(hashtags).most_common(top_n)
-    print(p)
     for i in p:
         w.append(i[0])
         u.append(i[1])
-    print(w, u)
-
-    fig, ax = plt.subplots()
-    ax.pie(u, labels=w)
-    plt.show()
+    draw_pie(u, w)
 
 
 def find_words(top_m, length=5):
@@ -41,19 +53,14 @@ def find_words(top_m, length=5):
         all_words = tweet[0].split(' ')
         for word in all_words:
             if (len(set(word).intersection(special_symbols)) == 0 and
-                    len(word)>=length):
+                    len(word) >= length):
                 words.append(word.lower())
     p = Counter(words).most_common(top_m)
-    print(p)
     for i in p:
         w.append(i[0])
         u.append(i[1])
-    print(w, u)
 
-    fig, ax = plt.subplots()
-    ax.pie(u, labels=w)
-    plt.show()
-
+    draw_pie(u, w)
 
 
 def most_active_places(number):
@@ -97,14 +104,12 @@ def popular_tweets():
     srt_eng = set(engagement)
     for i in srt_eng:
         number_of_tweets.append(engagement.count(i))
-    fig, ax = plt.subplots()
-    ax.bar(list(srt_eng)[:15], number_of_tweets[:15])
-    ax.set_ylabel('Number of posts')
-    ax.set_xlabel('Engagement')
-    ax.set_title("Engagement to tweets ratio")
-    plt.show()
+    draw_bars(srt_eng, number_of_tweets, 'Engagement',
+              "Number of tweets", "Engagement to tweets ratio")
+
 
 splited_data = []
+
 
 with open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file:
     data = csv.reader(file)
@@ -124,12 +129,7 @@ special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
 
 find_hashtags(5)
-# find_words(4, 8)
-# popular_tweets()
-
-
-
-
-
-
+find_words(10, 13)
+popular_tweets()
 #%%
+
