@@ -12,13 +12,24 @@ The most popular tweets
 
 def find_hashtags(top_n):
     global test_data
+    u, w = [], []
     hashtags = []
     for tweet in test_data:
         all_words = tweet[0].split(' ')
         for word in all_words:
             if word[0] == '#':
                 hashtags.append(word)
-    print(Counter(hashtags).most_common(top_n))
+
+    p = Counter(hashtags).most_common(top_n)
+    print(p)
+    for i in p:
+        w.append(i[0])
+        u.append(i[1])
+    print(w, u)
+
+    fig, ax = plt.subplots()
+    ax.pie(u, labels=w)
+    plt.show()
 
 
 def find_words(top_m, length=5):
@@ -112,8 +123,8 @@ test_data = dataset[1:100000]
 special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
 
-# find_hashtags(5)
-find_words(10, 13)
+find_hashtags(5)
+# find_words(4, 8)
 # popular_tweets()
 
 
