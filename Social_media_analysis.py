@@ -1,5 +1,5 @@
 import csv
-import matplotlib as mpl
+import matplotlib.pyplot as plt
 from collections import Counter
 from geopy.geocoders import Nominatim
 
@@ -24,13 +24,25 @@ def find_hashtags(top_n):
 def find_words(top_m, length=5):
     global test_data
     words = []
+    w = []
+    u = []
     for tweet in test_data:
         all_words = tweet[0].split(' ')
         for word in all_words:
             if (len(set(word).intersection(special_symbols)) == 0 and
                     len(word)>=length):
                 words.append(word.lower())
-    print(Counter(words).most_common(top_m))
+    p = Counter(words).most_common(top_m)
+    print(p)
+    for i in p:
+        w.append(i[0])
+        u.append(i[1])
+    print(w, u)
+
+    fig, ax = plt.subplots()
+    ax.pie(u, labels=w)
+    plt.show()
+
 
 
 def most_active_places(number):
@@ -64,15 +76,22 @@ def most_active_places(number):
     print(sorted_countries)
 
 
-def popular_tweets(number):
+def popular_tweets():
     engagement = []
+    number_of_tweets = []
     global test_data
     for tweet in test_data:
-        eng = int(int(tweet[3])*3 + int(tweet[4]))
+        eng = int(int(tweet[3])*2 + int(tweet[4]))
         engagement.append(eng)
-
-
-    print(sorted(engagement, reverse=True))
+    srt_eng = set(engagement)
+    for i in srt_eng:
+        number_of_tweets.append(engagement.count(i))
+    fig, ax = plt.subplots()
+    ax.bar(list(srt_eng)[:15], number_of_tweets[:15])
+    ax.set_ylabel('Number of posts')
+    ax.set_xlabel('Engagement')
+    ax.set_title("Engagement to tweets ratio")
+    plt.show()
 
 splited_data = []
 
@@ -88,13 +107,18 @@ header = splited_data[0]
 
 dataset = splited_data[1:]
 
-test_data = dataset[1:100]
+test_data = dataset[1:100000]
 
 special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
 
-find_hashtags(5)
-find_words(5, 10)
-popular_tweets(5)
+# find_hashtags(5)
+find_words(10, 13)
+# popular_tweets()
+
+
+
+
+
 
 #%%
