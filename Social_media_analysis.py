@@ -5,15 +5,38 @@ from geopy.geocoders import Nominatim
 
 
 """
-Most active country
-The most popular tweets  
+Most active country 
 """
+
+
+def get_user_input():
+    global inputs
+    user_input = input("What do you want to know?\n"
+                       "A - The most popular words\n"
+                       "B - the most popular hashtags\n"
+                       "C - Popularity of the tweets\n"
+                       "E - exit")
+    if user_input.lower() not in inputs:
+        print("invalid input")
+        get_user_input()
+    elif user_input.lower() == 'a':
+        number, length = int(input("How many top words?")), int(input("Minimum word length"))
+        find_words(number, length)
+    elif user_input.lower() == 'b':
+        number = int(input("How many top hashtags?"))
+        find_hashtags(number)
+    elif user_input.lower() == 'c':
+        popular_tweets()
+    else:
+        print("okay")
+        exit()
+
 
 
 def draw_pie(values, names):
     plt.style.use('dark_background')
     fig, ax = plt.subplots()
-    ax.pie(values, labels=names)
+    ax.pie(values, labels=names, autopct='%.0f%%')
     plt.show()
 
 
@@ -127,9 +150,6 @@ test_data = dataset[1:100000]
 
 special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
+inputs = ['a', 'b', 'c', 'e']
 
-find_hashtags(5)
-find_words(10, 13)
-popular_tweets()
-#%%
-
+get_user_input()
