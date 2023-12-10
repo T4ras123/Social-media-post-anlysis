@@ -25,12 +25,12 @@ def show_data():
                    if element != '' else 'NoInfo'
                    for element in data[i]])
         print('--------------------------------------------')
-        for a in range(-1, -5):
-            print(a)
+        a = -5
+        while a < 0:
             print([" ".join(element.split(' '))
                    if element != '' else 'NoInfo'
                    for element in data[a]])
-
+            a += 1
 
 def every_word(length):
     global words
@@ -102,6 +102,7 @@ def do_analysis(user_input):
         popular_tweets()
     elif user_input.lower() == 's':
         show_data()
+
 
 def draw_pie(values, names):
     plt.style.use('dark_background')
