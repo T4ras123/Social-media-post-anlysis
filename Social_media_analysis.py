@@ -12,6 +12,16 @@ Most active country
 def main():
     inpt = get_user_input()
     do_analysis(inpt)
+    do_continue()
+
+
+def do_continue():
+    ipt = input("Do you wanna continue? Yes/No")
+    if ipt.lower() == 'yes':
+        main()
+    else:
+        print('okay, bye')
+        exit()
 
 
 def show_data():
@@ -24,7 +34,8 @@ def show_data():
             print([" ".join(element.split(' '))
                    if element != '' else 'NoInfo'
                    for element in data[i]])
-        print('--------------------------------------------')
+        print('------------------------------------------------\n'
+              '------------------------------------------------')
         a = -5
         while a < 0:
             print([" ".join(element.split(' '))
@@ -132,6 +143,8 @@ def find_hashtags(top_n):
     w.append('Else')
     u.append(len(hashtags)-len(u))
     draw_pie(u, w)
+    draw_bars(w[:-1], u[:-1], 'top hashtags',
+              'usage', f'top {top_n} hashtags')
 
 
 def find_words(top_m, length=5):
@@ -146,6 +159,8 @@ def find_words(top_m, length=5):
     w.append('Else')
     u.append(len(words)-len(u))
     draw_pie(u, w)
+    draw_bars(w[:-1], u[:-1], 'top words',
+              'usage', f'top {top_m} words with len >= {length}')
 
 
 def most_active_places():
