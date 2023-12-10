@@ -1,7 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
 from collections import Counter
-from geopy.geocoders import Nominatim
 
 
 """
@@ -26,7 +25,7 @@ def do_continue():
 
 def show_data():
     global splited_data, special_symbols, words, hashtags, \
-        links, header, test_data
+         header, test_data
     with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv",
                "r", encoding="utf8") as file):
         data = list(csv.reader(file))
@@ -43,9 +42,11 @@ def show_data():
                    for element in data[a]])
             a += 1
 
+
 def every_word(length):
     global words
-    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
+    path = r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv"
+    with open(path, "r", encoding="utf8") as file:
         data = csv.reader(file)
         for row in data:
             all_words = row[1].split(" ")
@@ -69,7 +70,7 @@ def every_hashtag():
                     hashtags.append(word)
 
 
-def open_file(length=0):
+def open_file():
     global splited_data, special_symbols, words, hashtags,\
          header, test_data
     with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
@@ -80,7 +81,7 @@ def open_file(length=0):
                                  for element in row][2:])
 
     header = splited_data[0]
-    test_data = splited_data[1:][:10000]
+    test_data = splited_data[1:]
 
 
 def get_user_input():
@@ -119,6 +120,7 @@ def draw_pie(values, names):
     plt.style.use('dark_background')
     fig, ax = plt.subplots()
     ax.pie(values, labels=names, autopct='%.0f%%')
+
     plt.show()
 
 
@@ -129,6 +131,7 @@ def draw_bars(x_axis, y_axis, x_name='', y_name="", title=""):
     ax.set_ylabel(y_name)
     ax.set_xlabel(x_name)
     ax.set_title(title)
+
     plt.show()
 
 
@@ -164,34 +167,7 @@ def find_words(top_m, length=5):
 
 
 def most_active_places():
-    countries = {'Worldwide': 0,
-                 'NoInfo': 0}
-    countries_list = []
-    loc = Nominatim(user_agent="GetLoc")
-    for post in test_data:
-        getLoc = loc.geocode(post[1])
-        flag = 0
-        if post[1] in countries.keys():
-            countries[post[1]] += 1
-        else:
-            for country in countries_list:
-                try:
-                    getLoc1 = loc.geocode(country)
-                    if (abs(getLoc.latitude - getLoc1.latitude) < 1
-                            and abs(getLoc.longitude - getLoc1.longitude) < 1):
-                        countries[country] += 1
-                        flag += 1
-                        break
-                    else:
-                        continue
-                except AttributeError:
-                    countries.update({post[1]: 1})
-                    countries_list.append(post[1])
-            if flag == 0:
-                countries.update({post[1]: 1})
-                countries_list.append(post[1])
-    sorted_countries = sorted(countries)
-    print(sorted_countries)
+    return None
 
 
 def popular_tweets():
@@ -218,5 +194,3 @@ splited_data = []
 header = []
 test_data = []
 main()
-
-#%%
