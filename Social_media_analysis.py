@@ -131,7 +131,6 @@ def draw_bars(x_axis, y_axis, x_name='', y_name="", title=""):
     ax.set_ylabel(y_name)
     ax.set_xlabel(x_name)
     ax.set_title(title)
-
     plt.show()
 
 
@@ -194,3 +193,5 @@ splited_data = []
 header = []
 test_data = []
 main()
+
+#%%
