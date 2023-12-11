@@ -70,18 +70,13 @@ def every_hashtag():
                     hashtags.append(word)
 
 
-def open_file():
-    global splited_data, special_symbols, words, hashtags,\
-         header, test_data
+def find_engagement():
+    global engagement
     with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
         data = csv.reader(file)
-        for row in data:
-            splited_data.append([" ".join(element.split())
-                                 if element != '' else 'NoInfo'
-                                 for element in row][2:])
-
-    header = splited_data[0]
-    test_data = splited_data[1:]
+        for row in list(data)[1:]:
+            eng = int(int(row[4])*2 + int(row[5]))
+            engagement.append(eng)
 
 
 def get_user_input():
@@ -90,6 +85,7 @@ def get_user_input():
                        "A - The most popular words\n"
                        "B - the most popular hashtags\n"
                        "C - Popularity of the tweets\n"
+                       "P - Most popular places\n"
                        "S - Show data\n"
                        "E - exit\t")
     if user_input.lower() not in inputs:
@@ -114,6 +110,9 @@ def do_analysis(user_input):
         popular_tweets()
     elif user_input.lower() == 's':
         show_data()
+    else:
+        n = int(input("How many top places?"))
+        most_active_places(n)
 
 
 def draw_pie(values, names):
@@ -165,18 +164,27 @@ def find_words(top_m, length=5):
               'usage', f'top {top_m} words with len >= {length}')
 
 
-def most_active_places():
-    return None
+def most_active_places(n):
+    global places
+    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
+        data = csv.reader(file)
+        for row in list(data)[1:]:
+            if row[2] in places.keys():
+                places[row[2]] += 1
+            elif row[2] == '':
+                places['No Info'] += 1
+            else:
+                places.update({row[2]: 1})
+    pls = sorted(places.items(), key=lambda x: x[1], reverse=True)
+    countries = [pls[i][0] for i in range(n)]
+    users = [pls[i][1] for i in range(n)]
+    draw_bars(countries, users, 'Top places',
+              'Tweets', 'Most active places')
 
 
 def popular_tweets():
-    open_file()
-    engagement = []
-    number_of_tweets = []
-    global test_data
-    for tweet in test_data:
-        eng = int(int(tweet[2])*2 + int(tweet[3]))
-        engagement.append(eng)
+    global test_data, engagement
+    find_engagement()
     srt_eng = set(engagement)
     for i in srt_eng:
         number_of_tweets.append(engagement.count(i))
@@ -186,12 +194,18 @@ def popular_tweets():
 
 special_symbols = r'!@"#№$;:%^&?/\|*()_-+=><.,{}[]~`'
 
-inputs = ['a', 'b', 'c', 'e', 's']
+inputs = ['a', 'b', 'c', 'e', 's', 'p']
 hashtags = []
 words = []
 splited_data = []
 header = []
 test_data = []
+engagement = []
+number_of_tweets = []
+places = {
+    "Worldwide": 0,
+    "No Info": 0
+}
 main()
 
 #%%
