@@ -8,12 +8,14 @@ Most active country
 """
 
 
+# Main function that brings everything together
 def main():
     inpt = get_user_input()
     do_analysis(inpt)
     do_continue()
 
 
+# Continue function for UE
 def do_continue():
     ipt = input("Do you wanna continue? Yes/No")
     if ipt.lower() == 'yes':
@@ -23,10 +25,11 @@ def do_continue():
         exit()
 
 
+# Function that shows first and last 5 rows of data
 def show_data():
     global splited_data, special_symbols, words, hashtags, \
          header, test_data
-    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv",
+    with (open(r"tweets_raw.csv",
                "r", encoding="utf8") as file):
         data = list(csv.reader(file))
         for i in range(6):
@@ -43,9 +46,10 @@ def show_data():
             a += 1
 
 
+# Function opens a file and gets words from tweets
 def every_word(length):
     global words
-    path = r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv"
+    path = r"tweets_raw.csv"
     with open(path, "r", encoding="utf8") as file:
         data = csv.reader(file)
         for row in data:
@@ -57,9 +61,10 @@ def every_word(length):
                     words.append(word.lower())
 
 
+# Function opens a file and gets hashtags from tweets
 def every_hashtag():
     global hashtags
-    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
+    with (open(r"tweets_raw.csv", "r", encoding="utf8") as file):
         data = list(csv.reader(file))
         for row in data:
             all_words = row[1].split(" ")
@@ -70,15 +75,17 @@ def every_hashtag():
                     hashtags.append(word)
 
 
+# Function opens a file and finds an engagement with every tweet
 def find_engagement():
     global engagement
-    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
+    with (open(r"tweets_raw.csv", "r", encoding="utf8") as file):
         data = csv.reader(file)
         for row in list(data)[1:]:
             eng = int(int(row[4])*2 + int(row[5]))
             engagement.append(eng)
 
 
+# Function gets user input
 def get_user_input():
     global inputs
     user_input = input("What do you want to know?\n"
@@ -95,6 +102,7 @@ def get_user_input():
         return user_input.lower()
 
 
+# Does analysis according to input
 def do_analysis(user_input):
     if user_input == 'e':
         print("okay, bye")
@@ -115,6 +123,7 @@ def do_analysis(user_input):
         most_active_places(n)
 
 
+# Draws a matplotlib pie
 def draw_pie(values, names):
     plt.style.use('dark_background')
     fig, ax = plt.subplots()
@@ -123,6 +132,7 @@ def draw_pie(values, names):
     plt.show()
 
 
+# Draws a matplotlib bars
 def draw_bars(x_axis, y_axis, x_name='', y_name="", title=""):
     plt.style.use('dark_background')
     fig, ax = plt.subplots()
@@ -133,6 +143,7 @@ def draw_bars(x_axis, y_axis, x_name='', y_name="", title=""):
     plt.show()
 
 
+# Analyzes hashtags and draws top of them
 def find_hashtags(top_n):
     global hashtags
     every_hashtag()
@@ -148,6 +159,7 @@ def find_hashtags(top_n):
               'usage', f'top {top_n} hashtags')
 
 
+# Analyzes words and draws top of them
 def find_words(top_m, length=5):
     global words
     every_word(length)
@@ -164,9 +176,10 @@ def find_words(top_m, length=5):
               'usage', f'top {top_m} words with len >= {length}')
 
 
+# Finds most active places and displays them
 def most_active_places(n):
     global places
-    with (open(r"D:\Vova\Education\Uni\Intro to CS\Project\tweets_raw.csv", "r", encoding="utf8") as file):
+    with (open(r"tweets_raw.csv", "r", encoding="utf8") as file):
         data = csv.reader(file)
         for row in list(data)[1:]:
             if row[2] in places.keys():
@@ -182,6 +195,7 @@ def most_active_places(n):
               'Tweets', 'Most active places')
 
 
+# Analyzes engagement
 def popular_tweets():
     global test_data, engagement
     find_engagement()
