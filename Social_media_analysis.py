@@ -57,7 +57,8 @@ def every_word(length):
             while '' in all_words:
                 all_words.remove('')
             for word in all_words:
-                if len(set(word).intersection(special_symbols)) == 0 and len(word) >= length:
+                wrd = set(word).intersection(special_symbols)
+                if len(wrd) == 0 and len(word) >= length:
                     words.append(word.lower())
 
 
